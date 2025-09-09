@@ -1,0 +1,22 @@
+package com.breaze.clase_spring.entities;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name="autor")
+public class Autor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private Long id;
+    @Column(name="nombre")
+    private String nombre;
+    @Column(name="nacionalidad")
+    private String nacionalidad;
+}
