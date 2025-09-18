@@ -1,31 +1,29 @@
 package com.breaze.clase_spring.controllers;
 
+
 import com.breaze.clase_spring.entities.Autor;
-import com.breaze.clase_spring.repositories.AutorRepository;
-import com.breaze.clase_spring.servicesignature.AutorServiceSignature;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.breaze.clase_spring.services.IAutorService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/autores")
+@RequestMapping("/autor")
 public class AutorController {
+    private final IAutorService autorService;
 
-    private AutorServiceSignature autorServiceSignature;
-
-    public AutorController(AutorServiceSignature autorServiceSignature) {
-        this.autorServiceSignature = autorServiceSignature;
+    public AutorController(IAutorService autorService) {
+        this.autorService = autorService;
     }
 
-    @GetMapping("/obtenerAutores")
-    public List<Autor> obtenerAutores() {
-        return this.autorServiceSignature.obtenerAutores();
+    @GetMapping("/consultar_todos")
+        public ResponseEntity<List<Autor>> obtenerAutores(){
+        List<Autor> autores = autorService.obtenerAutores();
+        return ResponseEntity.ok(autores);
     }
 
-    @PostMapping("/crearAutor")
-    public Autor crearAutor(@RequestBody Autor autor) {
-        //return this.autorServiceSignature.
-        return null;
-    }
+
 }
