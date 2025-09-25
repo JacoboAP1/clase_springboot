@@ -1,6 +1,5 @@
 package com.breaze.clase_spring.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,16 +12,16 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="autor")
-public class Autor {
+@Table(name="categoria")
+public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-    @Column(name="nombre")
+    @Column(name = "nombre")
     private String nombre;
-    @Column(name="nacionalidad")
-    private String nacionalidad;
-    //@OneToMany(mappedBy = "autor")
-    //private Set<Libro> libros = new HashSet<>();
+
+    @OneToMany(mappedBy = "categoria")
+    private Set<LibroCategoria> libroCategorias;
+
 }
