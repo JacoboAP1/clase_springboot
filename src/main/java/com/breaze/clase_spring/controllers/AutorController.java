@@ -16,6 +16,7 @@ public class AutorController {
     public AutorController(IAutorService autorService) {
         this.autorService = autorService;
     }
+
     /**
      * Endpoint para obtener todos los autores.
      * @return ResponseEntity con la lista de autores.
@@ -63,8 +64,7 @@ public class AutorController {
                         .body(autorEditado))
                 .orElse(ResponseEntity.notFound().build());
     }
-
-
+    
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Autor> eliminarAutor(@PathVariable Long id) {
         return this.autorService.eliminarAutor(id)

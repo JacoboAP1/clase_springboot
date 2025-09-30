@@ -1,6 +1,8 @@
 package com.breaze.clase_spring.services.impl;
 
 import com.breaze.clase_spring.entities.Libro;
+import com.breaze.clase_spring.exceptions.AutorNotFoundException;
+import com.breaze.clase_spring.repositories.AutorRepository;
 import com.breaze.clase_spring.repositories.LibroRepository;
 import com.breaze.clase_spring.services.ILibroService;
 import org.springframework.stereotype.Service;
@@ -12,14 +14,19 @@ import java.util.Optional;
 public class LibroService implements ILibroService {
 
     private final LibroRepository libroRepository;
+    private final AutorRepository autorRepository;
 
-    public LibroService(LibroRepository libroRepository) {
+    public LibroService(LibroRepository libroRepository,  AutorRepository autorRepository) {
         this.libroRepository = libroRepository;
+        this.autorRepository = autorRepository;
     }
 
     @Override
-    public Libro crearLibro(Libro libro) {
-        return this.libroRepository.save(libro);
+    public Libro crearLibro(Libro libro) throws AutorNotFoundException {
+        if (autorRepository.findById(libro.getAutor().getId()).isPresent()) {
+            return libroRepository.save(libro);
+        }
+        throw new AutorNotFoundException();
     }
 
     @Override
