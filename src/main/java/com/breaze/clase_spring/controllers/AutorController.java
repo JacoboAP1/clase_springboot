@@ -64,7 +64,7 @@ public class AutorController {
                         .body(autorEditado))
                 .orElse(ResponseEntity.notFound().build());
     }
-    
+
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Autor> eliminarAutor(@PathVariable Long id) {
         return this.autorService.eliminarAutor(id)

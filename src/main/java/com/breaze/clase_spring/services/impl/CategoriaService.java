@@ -50,4 +50,14 @@ public class CategoriaService implements ICategoriaService {
                     return this.categoriaRepository.save(categoriaEncontrada);
                 });
     }
+
+    @Override
+    public Optional<Categoria> eliminarCategoria(Long id) {
+        return this.categoriaRepository.findById(id)
+                .map(categoria -> {
+                    this.categoriaRepository.delete(categoria);
+                    return categoria;
+                });
+
+    }
 }

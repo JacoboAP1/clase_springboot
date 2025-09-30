@@ -46,4 +46,43 @@ public class CategoriaController {
     public ResponseEntity<Categoria> crearCategoria(@RequestBody Categoria categoria) {
         return ResponseEntity.ok(this.categoriaService.crearCategoria(categoria));
     }
+
+    /**
+     * @param id
+     * @param categoria
+     * @return ResponseEntity con la categoria actualizada al 100%
+     */
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Categoria> actualizarCategoria(@PathVariable Long id,
+                                                         @RequestBody Categoria categoria) {
+
+        return this.categoriaService.actualizarCategoria(id, categoria)
+                .map(categoriaEditada ->
+                    ResponseEntity.ok().body(categoriaEditada))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * @param id
+     * @param categoria
+     * @return ResponseEntity con la categoria actualizada parcialmente
+     */
+    @PatchMapping("/actualizar_parcial/{id}")
+    public ResponseEntity<Categoria> actualizarCategoriaParcial(@PathVariable Long id,
+                                                                @RequestBody Categoria categoria) {
+
+        return this.categoriaService.actualizarCategoriaParcial(id, categoria)
+                .map(categoriaEditada -> ResponseEntity.ok()
+                        .body(categoriaEditada))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<Categoria> eliminarCategoria(@PathVariable Long id) {
+        return this.categoriaService.eliminarCategoria(id)
+                .map(categoria ->  ResponseEntity.ok().body(categoria))
+                .orElse(ResponseEntity.notFound().build());
+
+    }
+
 }

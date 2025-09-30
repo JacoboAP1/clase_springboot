@@ -10,4 +10,5 @@ public interface ICategoriaService {
     public List<Categoria> obtenerCategorias();
     public Optional<Categoria> actualizarCategoria(Long id, Categoria categoria);
     public Optional<Categoria> actualizarCategoriaParcial(Long id, Categoria categoria);
+    public Optional<Categoria> eliminarCategoria(Long id);
 }
