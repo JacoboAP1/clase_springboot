@@ -52,4 +52,13 @@ public class AutorService implements IAutorService {
                 });
     }
 
+    @Override
+    public Optional<Autor> eliminarAutor(Long id) {
+        return this.autorRepository.findById(id)
+                .map(autor -> {
+                    autorRepository.delete(autor);
+                    return autor;
+                });
+    }
+
 }

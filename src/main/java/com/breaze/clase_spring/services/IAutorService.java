@@ -11,4 +11,5 @@ public interface IAutorService {
     public Autor crearAutor(Autor autor);
     public Optional<Autor> actualizarAutor(Long id, Autor autor);
     public Optional<Autor> actualizarAutorParcial(Long id, Autor autor);
+    public Optional<Autor> eliminarAutor(Long id);
 }

@@ -21,7 +21,7 @@ public class AutorController {
      * @return ResponseEntity con la lista de autores.
      */
     @GetMapping("/consultar_todos")
-        public ResponseEntity<List<Autor>> obtenerAutores(){
+    public ResponseEntity<List<Autor>> obtenerAutores(){
         List<Autor> autores = autorService.obtenerAutores();
         return ResponseEntity.ok(autores);
     }
@@ -65,7 +65,11 @@ public class AutorController {
     }
 
 
-
-
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<Autor> eliminarAutor(@PathVariable Long id) {
+        return this.autorService.eliminarAutor(id)
+                .map(autorEliminado -> ResponseEntity.ok().body(autorEliminado))
+                .orElse(ResponseEntity.notFound().build());
+    }
 
 }
