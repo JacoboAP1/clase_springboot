@@ -1,6 +1,7 @@
 package com.breaze.clase_spring.controllers;
 
 import com.breaze.clase_spring.entities.Libro;
+import com.breaze.clase_spring.exceptions.AutorNotFoundException;
 import com.breaze.clase_spring.services.ILibroService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,13 @@ public class LibroController {
      */
     @PostMapping("/crear")
     public ResponseEntity<Libro> crearLibro(@RequestBody Libro libro){
-        return ResponseEntity.ok(this.libroService.crearLibro(libro));
+        try {
+            return ResponseEntity.ok(this.libroService.crearLibro(libro));
+        }
+        catch (AutorNotFoundException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
     /**
      * Endpoint para obtener todos los libros.
