@@ -1,9 +1,9 @@
 package com.breaze.clase_spring.services.impl;
 
-import com.breaze.clase_spring.entities.Libro;
+import com.breaze.clase_spring.dto.LibroDto;
+import com.breaze.clase_spring.entities.*;
 import com.breaze.clase_spring.exceptions.AutorNotFoundException;
-import com.breaze.clase_spring.repositories.AutorRepository;
-import com.breaze.clase_spring.repositories.LibroRepository;
+import com.breaze.clase_spring.repositories.*;
 import com.breaze.clase_spring.services.ILibroService;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +15,54 @@ public class LibroService implements ILibroService {
 
     private final LibroRepository libroRepository;
     private final AutorRepository autorRepository;
+    private final CategoriaRepository categoriaRepository;
+    private final DetalleLibroRepository detalleLibroRepository;
+    private final LibroCategoriaRepository libroCategoriaRepository;
 
-    public LibroService(LibroRepository libroRepository,  AutorRepository autorRepository) {
+    public LibroService(LibroRepository libroRepository,
+                        AutorRepository autorRepository,
+                        CategoriaRepository categoriaRepository,
+                        DetalleLibroRepository detalleLibroRepository,
+                        LibroCategoriaRepository libroCategoriaRepository) {
         this.libroRepository = libroRepository;
         this.autorRepository = autorRepository;
+        this.categoriaRepository = categoriaRepository;
+        this.detalleLibroRepository = detalleLibroRepository;
+        this.libroCategoriaRepository = libroCategoriaRepository;
     }
 
-    @Override
-    public Libro crearLibro(Libro libro) throws AutorNotFoundException {
-        if (autorRepository.findById(libro.getAutor().getId()).isPresent()) {
-            return libroRepository.save(libro);
+    public Libro crearLibro(LibroDto dto) throws AutorNotFoundException {
+        Autor autor = autorRepository.findById(dto.getAutorId())
+                .orElseThrow(() -> new AutorNotFoundException("Autor no encontrado"));
+
+        Libro libro = new Libro();
+        libro.setTitulo(dto.getTitulo());
+        libro.setAnioPublicacion(dto.getAnioPublicacion());
+        libro.setAutor(autor);
+
+        libro = libroRepository.save(libro);
+
+        DetalleLibro detalle = new DetalleLibro();
+        detalle.setIsbn(dto.getIsbn());
+        detalle.setNumeroPaginas(dto.getNumPaginas());
+        detalle.setIdioma(dto.getIdioma());
+        detalle.setLibro(libro);
+
+        detalleLibroRepository.save(detalle);
+
+        if (dto.getCategoriasIds() != null) {
+            for (Long categoriaId : dto.getCategoriasIds()) {
+                Categoria categoria = categoriaRepository.findById(categoriaId)
+                        .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+
+                LibroCategoria libroCategoria = new LibroCategoria();
+                libroCategoria.setLibro(libro);
+                libroCategoria.setCategoria(categoria);
+                libroCategoriaRepository.save(libroCategoria);
+            }
         }
-        throw new AutorNotFoundException();
+
+        return libro;
     }
 
     @Override

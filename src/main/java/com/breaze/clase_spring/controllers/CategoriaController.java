@@ -48,6 +48,7 @@ public class CategoriaController {
     }
 
     /**
+     * Endpoint para aactualizar una categoria al 100%
      * @param id
      * @param categoria
      * @return ResponseEntity con la categoria actualizada al 100%
@@ -63,6 +64,7 @@ public class CategoriaController {
     }
 
     /**
+     * Endpoint para actualizar una categoria parcialmente
      * @param id
      * @param categoria
      * @return ResponseEntity con la categoria actualizada parcialmente
@@ -77,6 +79,11 @@ public class CategoriaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Endpoint para eliminar una categoria
+     * @param id
+     * @return el cuerpo de la petición limpio al eliminar categoria
+     */
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Categoria> eliminarCategoria(@PathVariable Long id) {
         return this.categoriaService.eliminarCategoria(id)

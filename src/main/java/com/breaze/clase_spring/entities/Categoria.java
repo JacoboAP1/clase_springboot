@@ -21,7 +21,7 @@ public class Categoria {
     @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria")
-    private Set<LibroCategoria> libroCategorias;
+    /*@OneToMany(mappedBy = "categoria")
+    private Set<LibroCategoria> libroCategorias;*/
 
 }
