@@ -1,19 +1,20 @@
 package com.breaze.clase_spring.dto;
 
+import com.breaze.clase_spring.entities.LibroCategoria;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class LibroDto {
     private String titulo;
-    private int anioPublicacion;
+    private Integer anioPublicacion;
     private Long autorId;
 
     private String isbn;
-    private int numPaginas;
+    private Integer numPaginas;
     private String idioma;
 
-    private List<Long> categoriasIds;
+    private Set<LibroCategoria> categoriasIds;
 
 }

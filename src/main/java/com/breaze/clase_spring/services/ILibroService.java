@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface ILibroService {
     public Libro crearLibro(LibroDto dto) throws AutorNotFoundException;
     public List<Libro> obtenerLibros();
-    public Optional<Libro> actualizarParcialmente(Long id, Libro libro);
+    public Optional<Libro> actualizar(Long id, LibroDto libro);
+    public Optional<Libro> eliminarLibro(Long id);
 }

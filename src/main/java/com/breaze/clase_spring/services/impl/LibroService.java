@@ -51,8 +51,8 @@ public class LibroService implements ILibroService {
         detalleLibroRepository.save(detalle);
 
         if (dto.getCategoriasIds() != null) {
-            for (Long categoriaId : dto.getCategoriasIds()) {
-                Categoria categoria = categoriaRepository.findById(categoriaId)
+            for (LibroCategoria categoriaId : dto.getCategoriasIds()) {
+                Categoria categoria = categoriaRepository.findById(categoriaId.getId())
                         .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
 
                 LibroCategoria libroCategoria = new LibroCategoria();
@@ -72,7 +72,41 @@ public class LibroService implements ILibroService {
     }
 
     @Override
-    public Optional<Libro> actualizarParcialmente(Long id, Libro libro) {
-        return Optional.empty();
+    public Optional<Libro> actualizar(Long id, LibroDto libro) {
+        return this.libroRepository.findById(id)
+                .map(libroEnc -> {
+                    if (libro.getAutorId() != null) {
+                        libroEnc.getAutor().setId(libro.getAutorId());
+                    }
+                    if (libro.getIsbn() != null) {
+                        libroEnc.getDetalleLibro().setIsbn(libro.getIsbn());
+                    }
+                    if (libro.getIdioma() != null) {
+                        libroEnc.getDetalleLibro().setIdioma(libro.getIdioma());
+                    }
+                    if (libro.getTitulo() != null) {
+                        libroEnc.setTitulo(libro.getTitulo());
+                    }
+                    if (libro.getCategoriasIds() != null) {
+                        libroEnc.setLibroCategorias(libro.getCategoriasIds());
+                    }
+                    if (libro.getNumPaginas() != null) {
+                        libroEnc.getDetalleLibro().setNumeroPaginas(libro.getNumPaginas());
+                    }
+                    if (libro.getAnioPublicacion() != null) {
+                        libroEnc.setAnioPublicacion(libro.getAnioPublicacion());
+                    }
+                    return libroRepository.save(libroEnc);
+                });
     }
+
+    @Override
+    public Optional<Libro> eliminarLibro(Long id) {
+        return this.libroRepository.findById(id)
+                .map(libro -> {
+                    this.libroRepository.delete(libro);
+                    return libro;
+                });
+    }
+
 }

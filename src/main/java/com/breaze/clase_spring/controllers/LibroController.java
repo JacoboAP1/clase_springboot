@@ -39,14 +39,33 @@ public class LibroController {
      */
     @GetMapping("/consultar")
     public ResponseEntity<List<Libro>> obtenerLibros(){
-        List<Libro> libros = this.libroService.obtenerLibros();
         return ResponseEntity.ok(this.libroService.obtenerLibros());
     }
 
-    @PatchMapping("/actualizar/{id}")
-    public ResponseEntity<Libro> actualizarParcialmente(@PathVariable Long id,
-                                                        @RequestBody Libro libro){
-        return null;
+    /**
+     * Endpoint para actualizar libro
+     * @param id
+     * @param libro
+     * @return libro actualizado con los campos que quiera
+     */
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Libro> actualizarLibro(@PathVariable Long id,
+                                            @RequestBody LibroDto libro){
+        return this.libroService.actualizar(id, libro)
+                .map( libroEditado -> ResponseEntity.ok()
+                        .body(libroEditado))
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Endpoint para eliminar un libro
+     * @param id
+     * @return status 204 no content
+     */
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<Void> eliminarLibro(@PathVariable Long id){
+        return this.libroService.eliminarLibro(id)
+                .map(libro -> ResponseEntity.noContent().<Void>build())
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

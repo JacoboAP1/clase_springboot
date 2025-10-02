@@ -1,14 +1,10 @@
 package com.breaze.clase_spring.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -33,10 +29,10 @@ public class Libro {
     @JoinColumn(name = "autor_id")
     private Autor autor;
 
-    @OneToMany(mappedBy = "libro")
+    @OneToMany(mappedBy = "libro",  cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<LibroCategoria> libroCategorias;
 
-    @OneToOne(mappedBy = "libro")
+    @OneToOne(mappedBy = "libro", cascade = CascadeType.ALL,  orphanRemoval = true)
     private DetalleLibro detalleLibro;
 
 }
